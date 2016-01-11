@@ -1,5 +1,6 @@
 require_relative 'powerball_generator'
 require_relative 'arg_parser'
+require_relative 'balls_result'
 class GameMaster
   def initialize args
     @powerball_generator = PowerballGenerator.new
@@ -18,21 +19,21 @@ class GameMaster
   end
 
   def win_a_game?
-    player_powerballs, player_red_ball, actual_powerballs, actual_red_ball = play_a_game
-    return match(player_powerballs, player_red_ball, actual_powerballs, actual_red_ball)
+    player_balls_result, actual_balls_result = play_a_game
+    return match(player_balls_result, actual_balls_result)
   end
 
   def play_a_game
-    player_powerballs, player_red_ball = @powerball_generator.generate
-    actual_powerballs, actual_red_ball = @powerball_generator.generate
-    #puts "Player powerballs #{player_powerballs}"
-    #puts "Actual powerballs #{actual_powerballs}"
-    return player_powerballs, player_red_ball, actual_powerballs, actual_red_ball
+    player_balls_result = @powerball_generator.generate
+    actual_balls_result = @powerball_generator.generate
+    #puts "Player white_balls #{player_white_balls}"
+    #puts "Actual white_balls #{actual_white_balls}"
+    return player_balls_result, actual_balls_result 
   end
 
-  def match player_powerballs, player_red_ball, actual_powerballs, actual_red_ball
-    intersection = player_powerballs & actual_powerballs
-    if match_three_ball(intersection) && player_red_ball == actual_red_ball       
+  def match player_balls_result, actual_balls_result 
+    intersection = player_balls_result.white_balls & actual_balls_result.white_balls
+    if match_one_ball(intersection) && player_balls_result.powerball == actual_balls_result.powerball       
       #puts "MATCHED: #{intersection.inspect}"
       return true
     end
