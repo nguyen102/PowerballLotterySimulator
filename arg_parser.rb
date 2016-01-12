@@ -2,7 +2,7 @@ require "optionparser"
 
 class ArgParser
   def initialize args
-    @options = {}
+    @options = {:match_red_ball => false}
     initialize_parser
   end
 
@@ -21,7 +21,9 @@ class ArgParser
       o.banner = "Usage: Simulate Powerball Lottery"
       o.separator  ""
       o.separator  "Options"
-      o.on(     '-N', "--number_of_simulated games", "Provide number of games you want simulated.") { |number| @options[:number_of_games] =  number}
+      o.on(     '-N', "--simulated_games  number_of_simulated_games", Integer, "Provide number of games you want simulated.") { |number| @options[:number_of_games] =  number}
+      o.on(     '-B', "--white_balls_match  number_of_white_balls_match", Integer, "Provide number of white balls match to consider a win.") { |balls| @options[:number_white_balls_match] = balls }
+      o.on(     '-R', "--red_ball_match", "Flag for whether red ball should be matched to consider a win.") { @options[:match_red_ball] = true}
       o.on_tail('-H', "--help"               , "Show this message") { puts o; exit }
     end
   end
@@ -34,14 +36,18 @@ class ArgParser
   end
 
   def all_required_values_entered?
-    return !@options[:number_of_games].nil?
+    return !@options[:number_of_games].nil? && !@options[:number_white_balls_match].nil?
   end
 
   def get_error_message_for_missing_required_argument
     error_message = ""
     if @options[:number_of_games].nil?
-      error_message += "Missing field value for number_of_games"
+      error_message += "Missing field value for number_of_games. "
     end
+    if @options[:number_white_balls_match].nil?
+      error_message += "Missing field value for number_white_balls_match. "
+    end
+
     return error_message
   end
 
