@@ -1,0 +1,10 @@
+ruby game_master.rb -H 
+Usage: Simulate Powerball Lottery
+
+Options
+    -N  number_of_simulated_games,   Provide number of games you want simulated.
+        --simulated_games
+    -B  number_of_white_balls_match, Provide number of white balls match to consider a win.
+        --white_balls_match
+    -R, --red_ball_match             Flag for whether red ball should be matched to consider a win.
+    -H, --help                       Show this message
